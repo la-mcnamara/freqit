@@ -1,4 +1,7 @@
+import pandas as pd
+
 class oneway:
+
     def __init__(self, series):
         """ Constructor for this class. """ 
         self.series = series
@@ -7,20 +10,30 @@ class oneway:
         """
         Just print a variable name
         """
-        # print('Var is ', var)
         print(self.name)
 
-    def freqtable(self): 
+    def freqtable(self, sort='value'): 
         """
         One-way frequency table.
+        sort: value (default), number, or pct
         """
 
-        # return (pd.concat([df[var].value_counts().rename('number'), 
-        #         df[var].value_counts(normalize=True).mul(100).rename('percentage'),
-        #         df[var].value_counts().cumsum().rename('cum_total'),
-        #         df[var].value_counts(normalize=True).cumsum().mul(100).rename('cum_percentage')], axis=1)
-        #         .reset_index()
-        #         .rename(columns={'index': 'value'}))
+        table = (pd.concat([self.series.value_counts().rename('count'), 
+                self.series.value_counts(normalize=True).mul(100).rename('percentage'),
+                self.series.value_counts().cumsum().rename('cum_total'),
+                self.series.value_counts(normalize=True).cumsum().mul(100).rename('cum_percentage')], axis=1)
+                .reset_index()
+                .rename(columns={'index': 'value'}))
         
-        return self.series.value_counts()
+        if sort in ['value','count','pct','percentage']:
+            if sort == 'pct':
+                sort = 'percentage'
+            
+            table = table.sort_values(by=[sort])
+        else: 
+            print('Invalid sort!')
+
+        return table
+        
+        # return self.series.value_counts()
         
