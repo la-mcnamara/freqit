@@ -12,16 +12,16 @@ class oneway:
         """
         print(self.name)
 
-    def freqtable(self, sort='value'): 
+    def freqtable(self, sort='value', ): 
         """
         One-way frequency table.
+
         sort: value (default), number, or pct
         """
 
         table = (pd.concat([self.series.value_counts().rename('count'), 
-                self.series.value_counts(normalize=True).mul(100).rename('percentage'),
-                self.series.value_counts().cumsum().rename('cum_total'),
-                self.series.value_counts(normalize=True).cumsum().mul(100).rename('cum_percentage')], axis=1)
+                self.series.value_counts(normalize=True).mul(100).rename('percentage')], 
+                axis=1)
                 .reset_index()
                 .rename(columns={'index': 'value'}))
         
@@ -32,6 +32,14 @@ class oneway:
             table = table.sort_values(by=[sort])
         else: 
             print('Invalid sort!')
+ 
+        totn = table['count'].sum()
+
+        table = (pd.concat([table,
+                          table['count'].cumsum().rename('cum_total'),
+                          table['count'].cumsum().div(totn).mul(100).rename('cum_percentage')], 
+                          axis=1).reset_index(drop=True)
+                          )
 
         return table
         
