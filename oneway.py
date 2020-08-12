@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 class oneway:
 
@@ -21,7 +22,7 @@ class oneway:
         """
 
         ### summing
-        table = (pd.concat([self.series.value_counts().rename('count'), 
+        table = (pd.concat([self.series.value_counts(dropna=False).rename('count'), 
                 self.series.value_counts(normalize=True).mul(100).rename('percentage')], 
                 axis=1)
                 .reset_index()
