@@ -2,33 +2,57 @@ import pandas as pd
 import numpy as np
 
 class oneway:
+    """ A class used to represent a one-way frequency table
+
+    Attributes
+    ----------
+    series : pandas series
+        A column from a DataFrame to compute the frequency table on
+
+    Methods
+    -------
+    freqtable(sort='value', asc=True)
+        One-way frequency table.
+    """
 
     def __init__(self, series):
         """ Constructor for this class. """ 
         self.series = series
     
-    def justprint(self): 
-        """
-        Just print a variable name
-        """
-        print(self.name)
+    # def justprint(self): 
+    #     """
+    #     Just print a variable name
+    #     """
+    #     print(self.name)
 
     def freqtable(self, sort='value', asc=True): 
-        """
-        One-way frequency table.
+        """One-way frequency table.
 
-        sort: value (default), number, or pct
-        asc: sort ascending (True/False)
+        Parameters
+        ----------
+        sort : str, optional
+            The column the frequency table should be sorted on - 
+            value (series data), number, (count of values), or pct
+            (percentage of values). Default is values
+            default = value
+        asc : bool, optional
+            Flag indicating if sort should be ascending (default is
+            True)
+
+        Returns
+        -------
+        table : dataframe
+            A frequency table
         """
 
-        ### summing
+        # summing
         table = (pd.concat([self.series.value_counts(dropna=False).rename('count'), 
                 self.series.value_counts(normalize=True).mul(100).rename('percentage')], 
                 axis=1)
                 .reset_index()
                 .rename(columns={'index': 'value'}))
         
-        ### sorting
+        # sorting
         if sort in ['value','count','pct','percentage']:
             if sort == 'pct':
                 sort = 'percentage'
@@ -44,7 +68,7 @@ class oneway:
         else: 
             print('Invalid sort!')
  
-        ### cumulating
+        # cumulating
         totn = table['count'].sum()
 
         table = (pd.concat([table,
