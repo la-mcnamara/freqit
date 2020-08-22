@@ -1,10 +1,16 @@
-from distutils.core import setup
-setup(
+import setuptools
+
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+setuptools.setup(
   name = 'freqit',         # How you named your package folder (MyLib)
-  packages = ['freqit'],   # Chose the same as "name"
+  packages = setuptools.find_packages(),   # Chose the same as "name"
   version = '0.1',      # Start with a small number and increase it with every change you make
   license='MIT',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository
   description = 'Better frequency and crosstab tables.',   # Give a short description about your library
+  long_description=long_description,
+  long_description_content_type="text/markdown",
   author = 'Lauren McNamara',                   # Type in your name
   author_email = 'lauren.mcnamara@gmail.com',      # Type in your E-Mail
   url = 'https://github.com/lmcnamar/freqit',   # Provide either the link to your github or to your website
@@ -22,5 +28,4 @@ setup(
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
   ],
-  python_requires='>=3.6',
 )
