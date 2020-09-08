@@ -19,12 +19,6 @@ class oneway:
         """ Constructor for this class. """ 
         self.series = series
     
-    # def justprint(self): 
-    #     """
-    #     Just print a variable name
-    #     """
-    #     print(self.name)
-
     def freqtable(self, sort='value', asc=True): 
         """One-way frequency table.
 
@@ -33,11 +27,11 @@ class oneway:
         sort : str, optional
             The column the frequency table should be sorted on - 
             value (series data), count (count of values), or pct
-            (percentage of values). Default is values
+            (percentage of values).
             default = value
         asc : bool, optional
-            Flag indicating if sort should be ascending (default is
-            True)
+            Flag indicating if sort should be ascending.
+            default = True
 
         Returns
         -------
