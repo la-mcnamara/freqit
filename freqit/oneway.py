@@ -32,7 +32,7 @@ class oneway:
         ----------
         sort : str, optional
             The column the frequency table should be sorted on - 
-            value (series data), number, (count of values), or pct
+            value (series data), count (count of values), or pct
             (percentage of values). Default is values
             default = value
         asc : bool, optional
