@@ -21,8 +21,8 @@ class xtab:
 
     Methods
     -------
-    freqtable(sort='value', asc=True)
-        One-way frequency table.
+    freqtable()
+        Multi-variable frequency table.
     """
 
     def __init__(self, df, cols, sort='value', asc=True):
@@ -32,3 +32,10 @@ class xtab:
         self.sort = sort
         self.asc = asc
     
+    def freqtable(self):
+        # summing
+        ct = df.groupby([cols])  \
+                    .size()         \
+                    .rename(columns={0:'count'})    
+
+        return ct

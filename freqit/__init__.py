@@ -9,5 +9,6 @@ the Python environment.
 
 ## __init__ file for freqit
 from .oneway import oneway
+from .xtab import xtab
 
 
