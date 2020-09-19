@@ -34,8 +34,15 @@ class xtab:
     
     def freqtable(self):
         # summing
-        ct = df.groupby([cols])  \
+          
+        ct = self.df.groupby(self.cols)  \
                     .size()         \
-                    .rename(columns={0:'count'})    
+                    .reset_index()  \
+                    .rename(columns={0:'count'}) 
+
+        ct['percentage'] = round((ct['count'] / len(self.df))*100,2)
+
+        narows = self.df[self.df[self.cols].isnull().any(axis=1)] 
+        
 
         return ct
