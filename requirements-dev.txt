@@ -1,0 +1,6 @@
+# requirements for package development
+
+-r requirements.txt
+
+jupyterlab==3.3.4
+ipywidgets==8.0.2
