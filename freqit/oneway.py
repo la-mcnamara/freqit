@@ -10,8 +10,8 @@ def freqtable(series, sort='value', asc=True):
         A column from a DataFrame to compute the frequency table on
     sort : str, optional
         The column the frequency table should be sorted on -
-        value (series data), number, (count of values), or pct
-        (percentage of values). Default is values
+        value (series data), count (frequency count of values), or pct
+        (percentage of values).
         default = value
     asc : bool, optional
         Flag indicating if sort should be ascending (default is
