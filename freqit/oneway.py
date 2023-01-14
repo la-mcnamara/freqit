@@ -1,77 +1,57 @@
 import pandas as pd
-import numpy as np
 
-class oneway:
-    """ A class used to represent a one-way frequency table
 
-    Attributes
+def freqtable(series, sort='value', asc=True):
+    """One-way frequency table.
+
+    Parameters
     ----------
     series : pandas series
         A column from a DataFrame to compute the frequency table on
+    sort : str, optional
+        The column the frequency table should be sorted on -
+        value (series data), count (frequency count of values), or pct
+        (percentage of values).
+        default = value
+    asc : bool, optional
+        Flag indicating if sort should be ascending (default is
+        True)
 
-    Methods
+    Returns
     -------
-    freqtable(sort='value', asc=True)
-        One-way frequency table.
+    table : dataframe
+        A frequency table
     """
 
-    def __init__(self, series):
-        """ Constructor for this class. """ 
-        self.series = series
-    
-    def freqtable(self, sort='value', asc=True): 
-        """One-way frequency table.
+    # summing
+    table = pd.concat([series.value_counts(dropna=False).rename('count'),
+                       series.value_counts(normalize=True).mul(100).rename('percentage')],
+                      axis=1)
+    table = table.reset_index() \
+                 .rename(columns={'index': 'value'})
 
-        Parameters
-        ----------
-        sort : str, optional
-            The column the frequency table should be sorted on - 
-            value (series data), count (count of values), or pct
-            (percentage of values).
-            default = value
-        asc : bool, optional
-            Flag indicating if sort should be ascending.
-            default = True
+    # sorting
+    if sort in ['value', 'count', 'pct', 'percentage', 'percent']:
+        if sort in ['pct', 'percent']:
+            sort = 'percentage'
 
-        Returns
-        -------
-        table : dataframe
-            A frequency table
-        """
+        if sort == 'value':
+            table = table.loc[pd.to_numeric(table.value, errors='coerce')
+                                .sort_values(na_position='first',
+                                             ascending=asc)
+                                .index]
+        else:
+            table = table.sort_values(by=[sort],
+                                      ascending=asc)
+    else:
+        print('Invalid sort!')
 
-        # summing
-        table = (pd.concat([self.series.value_counts(dropna=False).rename('count'), 
-                self.series.value_counts(normalize=True).mul(100).rename('percentage')], 
-                axis=1)
-                .reset_index()
-                .rename(columns={'index': 'value'}))
-        
-        # sorting
-        if sort in ['value','count','pct','percentage']:
-            if sort == 'pct':
-                sort = 'percentage'
+    # cumulating
+    totn = table['count'].sum()
 
-            if sort == 'value':
-                table = table.loc[pd.to_numeric(table.value, errors='coerce')   \
-                                    .sort_values(na_position = 'first'
-                                                ,ascending = asc)  \
-                                    .index]
-            else:
-                table = table.sort_values(by=[sort]
-                                        ,ascending = asc)
-        else: 
-            print('Invalid sort!')
- 
-        # cumulating
-        totn = table['count'].sum()
+    table = pd.concat([table,
+                       table['count'].cumsum().rename('cum_total'),
+                       table['count'].cumsum().div(totn).mul(100).rename('cum_percentage')],
+                      axis=1).reset_index(drop=True)
 
-        table = (pd.concat([table,
-                          table['count'].cumsum().rename('cum_total'),
-                          table['count'].cumsum().div(totn).mul(100).rename('cum_percentage')], 
-                          axis=1).reset_index(drop=True)
-                          )
-
-        return table
-        
-        # return self.series.value_counts()
-        
+    return table
