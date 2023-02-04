@@ -6,8 +6,7 @@ build-backend = "hatchling.build"
 name = "freqit"
 version = "1.0"
 authors = [
-  { name="Lauren McNamara", email="lauren.mcnamara@gmail.com"
-    },
+  { name="Lauren McNamara", email="lauren.mcnamara@gmail.com"},
 ]
 dependencies = ["pandas"]
 description = "Better frequency and crosstab tables."
